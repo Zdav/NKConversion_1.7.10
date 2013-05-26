@@ -947,6 +947,19 @@ if ($nuked['profil_details'] == "on")
 }		
 // Fin anniversaire
 
+		if ($modos != "")
+		{
+			$moderateurs = explode('|', $modos);
+			for ($i = 0;$i < count($moderateurs);$i++)
+			{
+				if ($i > 0) $sep = ",&nbsp;";
+				$sql2 = mysql_query("SELECT pseudo FROM " . USER_TABLE . " WHERE id = '" . $moderateurs[$i] . "'");
+				list($modo_pseudo) = mysql_fetch_row($sql2);
+				$modo .= $sep . $modo_pseudo;
+			}
+			$lienmodo = "<a href=\"index.php?file=Members&op=detail&autor=" . $modo . "\" alt=\"" . _SEEMODO . "" . $modo . "\" title=\"" . _SEEMODO . "" . $modo . "\">" . $modo . "</a>";
+		}
+
 	echo "	</td>\n"
 		. "	<td class=\"Forum_online_centre_d3\"><b>" . _MODO . " :</b>&nbsp;<small>" . $lienmodo . "</small></td>\n"
 		. "	</tr>\n"
