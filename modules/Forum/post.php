@@ -62,10 +62,10 @@ if ($visiteur >= $level_access && $level_access > -1)
 
         $select_cat = mysql_query('SELECT nom, cat_primaire FROM ' . FORUM_CAT_TABLE . ' WHERE id = ' . $cat);
         list($nom2, $catprimaire) = mysql_fetch_array($select_cat);
-		
+
 		$sql_cats = mysql_query("SELECT id, nom FROM " . FORUM_PRIMAIRE_TABLE . " WHERE id = '" . $catprimaire . "'");
 		list($cat_pri, $cat_primaire) = mysql_fetch_row($sql_cats);
-		$cat_primaire = printSecuTags($cat_primaire); 
+		$cat_primaire = printSecuTags($cat_primaire);
 
         if ($user && $modos != "" && strpos($user[0], $modos))
         {
@@ -107,15 +107,15 @@ echo "	<br /><form method=\"post\" action=\"" . $action . "\" enctype=\"multipar
 	. "		</tr>\n"
 	. "	</table>\n";
 
-echo"<div class=\"Forum_encadrement\">\n";	
-	
+echo"<div class=\"Forum_encadrement\">\n";
+
 echo "	<table class=\"Forum_Ppost_haut_t\" cellspacing=\"1\">\n"
     . "		<tr class=\"Forum_Ppost_haut_r\">\n"
 	. "			<td class=\"Forum_Ppost_haut_d\"><b>" . $action_name . "</b></td>\n"
 	. "		</tr>\n"
 	. "	</table>\n";
-	
-echo "	<table class=\"Forum_Ppost_centre_t\" cellspacing=\"1\">\n"	
+
+echo "	<table class=\"Forum_Ppost_centre_t\" cellspacing=\"1\">\n"
     . "		<tr class=\"Forum_Ppost_centre_r\">\n"
 	. "			<td class=\"Forum_Ppost_centre_d1\"><big><b>" . _PSEUDO . "</b></big></td>\n"
 	. "			<td class=\"Forum_Ppost_centre_d2\">";
@@ -178,6 +178,8 @@ echo "			</td>\n"
 					{
 						$ftexte = '<blockquote style="border: 1px dashed ' . $bgcolor3 . '; background: #FFF; color: #000; padding: 5px"><strong>' . _QUOTE . ' ' . _BY . ' ' . $author . ' :</strong><br />' . $e_txt . '</blockquote>';
 					}
+
+                    $ftexte = editPhpCkeditor($ftexte);
 
 					if ($_REQUEST['do'] == "quote")
 					{
@@ -296,30 +298,18 @@ echo "			</td>\n"
         echo "		</td>\n"
 			. "	</tr>\n";
 
-        if ($captcha == 1)
-        {
-            echo "	<tr class=\"Forum_Ppost_centre_r7\">\n"
-				. "		<td class=\"Forum_Ppost_centre_d13\"><big><b>" . _SECURITYCODE . "</b></big></td>\n"
-				. "		<td class=\"Forum_Ppost_centre_d14\">\n"
-				. "			<table>";
-                
-								create_captcha(1);
-
-            echo "			</table><br />\n"
-				. "		</td>\n"
-				. "	</tr>\n";
-        }
-
 echo" 		<tr class=\"Forum_Ppost_centre_r8\">\n"
 	. "			<td class=\"Forum_Ppost_centre_d15\" colspan=\"2\" align=\"center\">"
     . "				<input type=\"submit\" value=\"" . _SEND . "\" />\n"
     . "				<input type=\"hidden\" name=\"forum_id\" value=\"" . $_REQUEST['forum_id'] . "\" />\n"
     . "				<input type=\"hidden\" name=\"thread_id\" value=\"" . $_REQUEST['thread_id'] . "\" />\n"
-    . "				<input type=\"hidden\" name=\"mess_id\" value=\"" . $_REQUEST['mess_id'] . "\" />\n"
-    . "			</td>\n"
-	. "		</tr>\n"
-	. "	</table>\n"
-	. "	</form></div><br />\n";
+    . "             <input type=\"hidden\" name=\"mess_id\" value=\"" . $_REQUEST['mess_id'] . "\" />\n";
+
+    if ($captcha == 1){
+            create_captcha(0);
+    }
+
+echo "</td></tr></table></form></div><br />\n";
 
         if ($_REQUEST['thread_id'] != "")
         {
@@ -343,7 +333,7 @@ echo" 		<tr class=\"Forum_Ppost_centre_r8\">\n"
 				. "	</div><br />\n";
         }
     }
-	
+
 echo "	<table class=\"Forum_Ppost_bas_t\">\n"
 	. "		<tr class=\"Forum_Ppost_bas_r\">\n"
 	. "			<td class=\"Forum_Ppost_bas_d\"></td>\n"
